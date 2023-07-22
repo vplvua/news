@@ -7,9 +7,11 @@ import { ForecastService } from '../forecast.service';
   styleUrls: ['./forecast.component.css'],
 })
 export class ForecastComponent {
+  forecastData!: { dateString: string; temp: number }[];
+
   constructor(forecastService: ForecastService) {
-    forecastService.getCurrentPosition().subscribe((coords) => {
-      console.log(coords);
+    forecastService.getForecast().subscribe((forecastData) => {
+      this.forecastData = forecastData;
     });
   }
 }
