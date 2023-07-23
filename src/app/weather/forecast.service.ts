@@ -5,11 +5,12 @@ import {
   map,
   mergeMap,
   of,
-  pluck,
   switchMap,
   toArray,
 } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { environment } from 'src/environment';
 
 interface OpenWeatherResponse {
   list: {
@@ -24,7 +25,8 @@ interface OpenWeatherResponse {
   providedIn: 'root',
 })
 export class ForecastService {
-  url = 'https://api.openweathermap.org/data/2.5/forecast';
+  url = environment.forecastURL;
+  appid = environment.forecastAPIKey;
 
   constructor(private http: HttpClient) {}
 
@@ -35,7 +37,7 @@ export class ForecastService {
           .set('lat', String(coords.latitude))
           .set('lon', String(coords.longitude))
           .set('units', 'metric')
-          .set('appid', 'a24795300c429d64868e03aa07e89853');
+          .set('appid', this.appid);
       }),
       switchMap((params) =>
         this.http.get<OpenWeatherResponse>(this.url, { params })
